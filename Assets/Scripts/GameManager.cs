@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     public bool isGameActive;
     public GameObject titleScreen;
 
-    private int score;
+    public int score;
     private float spawnRate = 1.0f;
     // Start is called before the first frame update
     void Start()

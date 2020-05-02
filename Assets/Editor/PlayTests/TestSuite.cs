@@ -18,21 +18,21 @@ namespace Tests
 
         [UnityTest]
         [Timeout(60000)]
-        public IEnumerator TestWinning()
+        public IEnumerator TestGetting100Points()
         {
-
             SceneManager.LoadScene("Scenes/MainScene", LoadSceneMode.Single);
 
             var easyButton = (GameObject) null;
             yield return new WaitUntil(() => (easyButton = GameObject.Find("Easy Button")) != null );
             easyButton.GetComponent<Button>().onClick.Invoke();
 
-            while (true)
-            {
-                var crates = (GameObject[]) null;
-                yield return new WaitUntil(() => (crates = GameObject.FindGameObjectsWithTag("Good")).Length > 0);
+            GameManager gameManager = GameObject.Find("Game Manager").gameObject.GetComponent<GameManager>();
 
-                foreach (var crate in crates)
+            while (gameManager.score < 100)
+            {
+                yield return new WaitUntil(() => (GameObject.FindGameObjectsWithTag("Good")).Length > 0);
+
+                foreach (var crate in GameObject.FindGameObjectsWithTag("Good"))
                 {
                     crate.GetComponent<Target>().OnMouseDown();
                 }
