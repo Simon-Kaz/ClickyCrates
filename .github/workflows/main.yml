@@ -1,4 +1,4 @@
-name: My Unity Github Actions Test
+name: CI
 
 on:
   pull_request: {}
@@ -9,36 +9,43 @@ env:
 
 jobs:
   build:
-    name: Build my project ✨
+    name: Test & Build for ${{ matrix.targetPlatform }} with Unity ${{ matrix.unityVersion }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        unityVersion:
+          - 2019.3.12f1
+        targetPlatform:
+          - iOS
+          - WebGL
     steps:
-    
-      # Checkout
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
         with:
           lfs: true
-    
-      # Cache
+
       - uses: actions/cache@v1.1.0
         with:
           path: Library
-          key: Library
+          key: Library-${{ matrix.targetPlatform }}
 
-      # Test
-      - name: Run tests
-        uses: webbertakken/unity-test-runner@v1.3
+      - uses: webbertakken/unity-test-runner@v1.6
+        id: testRunner
         with:
-          unityVersion: 2018.4.20f1
+          testMode: playmode #There are no editMode tests yet
+          unityVersion: ${{ matrix.unityVersion }}
 
-      # Build
-      - name: Build project
-        uses: webbertakken/unity-builder@v0.10
+      - uses: actions/upload-artifact@v1
         with:
-          unityVersion: 2018.4.20f1
-          targetPlatform: WebGL 
+          name: Test results
+          path: ${{ steps.testRunner.outputs.artifactsPath }}
 
-      # Output 
+      - uses: webbertakken/unity-builder@v0.15
+        with:
+          versioning: None
+          unityVersion: ${{ matrix.unityVersion }}
+          targetPlatform: ${{ matrix.targetPlatform }}
+
       - uses: actions/upload-artifact@v1
         with:
           name: Build
