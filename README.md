@@ -4,4 +4,4 @@
 
 Simple Unity game for experimental development.
 
-![Try it out here](https://simon-kaz.github.io/unity/index.html)
+Try it out - https://simon-kaz.github.io/unity/index.html
