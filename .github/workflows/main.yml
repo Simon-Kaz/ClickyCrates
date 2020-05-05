@@ -8,7 +8,7 @@ env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
 jobs:
-  build:
+  testAndBuildForAllPlatforms:
     name: Test & Build for ${{ matrix.targetPlatform }} with Unity ${{ matrix.unityVersion }}
     runs-on: ubuntu-latest
     strategy:
@@ -19,6 +19,7 @@ jobs:
         targetPlatform:
           - iOS
           - WebGL
+          - Android
     steps:
       - uses: actions/checkout@v2
         with:
@@ -32,7 +33,7 @@ jobs:
       - uses: webbertakken/unity-test-runner@v1.6
         id: testRunner
         with:
-          testMode: playmode #There are no editMode tests yet
+          testMode: playmode # There are no editMode tests yet
           unityVersion: ${{ matrix.unityVersion }}
 
       - uses: actions/upload-artifact@v1
@@ -45,6 +46,7 @@ jobs:
           versioning: None
           unityVersion: ${{ matrix.unityVersion }}
           targetPlatform: ${{ matrix.targetPlatform }}
+          buildMethod: Editor.Builder.BuildProject
 
       - uses: actions/upload-artifact@v1
         with:
