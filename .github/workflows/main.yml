@@ -52,3 +52,22 @@ jobs:
         with:
           name: Build
           path: build
+
+  generateIPA:
+    name: generate .ipa from iOS project
+    runs-on: macOS-latest
+    needs: testAndBuildForAllPlatforms
+    env:
+      BUILDS_PATH: ${{ format('{0}/build', github.workspace) }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+      - uses: actions/download-artifact@v1
+        with:
+          name: Build
+          path: build
+      - run: find $BUILDS_PATH -type f -iname "*.sh" -exec chmod +x {} \; # Fix unity issue with .sh permissions https://issuetracker.unity3d.com/issues/ios-mapfileparser-dot-sh-permission-denied-when-building-xcode-project-built-from-windows-directly-to-a-macos-shared-folder
+      - uses: maierj/fastlane-action@v1.4.0
+        with:
+          lane: 'ios buildIpa'
