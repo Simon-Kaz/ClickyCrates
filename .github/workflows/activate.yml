@@ -4,6 +4,11 @@ jobs:
   activation:
     name: Request manual activation file 🔑
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        unityVersion:
+          - 2019.4.0f1 # not current 2019 LTS, but the most recent available docker image at https://hub.docker.com/r/gableroux/unity3d/tags
+          - 2018.4.21f1 # not current 2018 LTS, but the most recent available docker image at https://hub.docker.com/r/gableroux/unity3d/tags
     steps:
       # Checkout repository
       - uses: actions/checkout@v2
@@ -12,10 +17,10 @@ jobs:
       - uses: webbertakken/unity-request-manual-activation-file@v1.1
         id: getManualLicenseFile
         with:
-          unityVersion: 2019.3.12f1
+          unityVersion: ${{ matrix.unityVersion }}
           
       # Upload artifact (Unity_v20XX.X.XXXX.alf)
       - uses: actions/upload-artifact@v1
         with:
           name: Manual Activation File
-          path: ${{ steps.getManualLicenseFile.outputs.filePath }}
+          path: ${{ steps.getManualLicenseFile.outputs.filePath }}-${{ matrix.unityVersion }}
