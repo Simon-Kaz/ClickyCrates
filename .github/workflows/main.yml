@@ -17,31 +17,31 @@ jobs:
         unityVersion:
           - 2019.3.12f1
         targetPlatform:
-          - iOS
-          - WebGL
+          # - iOS
+          # - WebGL
           - Android
     steps:
       - uses: actions/checkout@v2
         with:
           lfs: true
 
-      - uses: actions/cache@v1.1.0
-        with:
-          path: Library
-          key: Library-${{ matrix.targetPlatform }}
+      # - uses: actions/cache@v1.1.0
+      #   with:
+      #     path: Library
+      #     key: Library-${{ matrix.targetPlatform }}
 
-      - uses: webbertakken/unity-test-runner@v1.6
-        id: testRunner
-        with:
-          testMode: playmode # There are no editMode tests yet
-          unityVersion: ${{ matrix.unityVersion }}
+      # - uses: webbertakken/unity-test-runner@v1.6
+      #   id: testRunner
+      #   with:
+      #     testMode: playmode # There are no editMode tests yet
+      #     unityVersion: ${{ matrix.unityVersion }}
 
-      - uses: actions/upload-artifact@v1
-        with:
-          name: Test results
-          path: ${{ steps.testRunner.outputs.artifactsPath }}
+      # - uses: actions/upload-artifact@v1
+      #   with:
+      #     name: Test results
+      #     path: ${{ steps.testRunner.outputs.artifactsPath }}
 
-      - uses: webbertakken/unity-builder@v0.15
+      - uses: simon-kaz/unity-builder@v1.2
         with:
           versioning: None
           unityVersion: ${{ matrix.unityVersion }}
