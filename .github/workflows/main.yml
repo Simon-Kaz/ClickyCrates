@@ -41,7 +41,7 @@ jobs:
       #     name: Test results
       #     path: ${{ steps.testRunner.outputs.artifactsPath }}
 
-      - uses: webbertakken/unity-builder@v1.1
+      - uses: simon-kaz/unity-builder@v1.2
         with:
           versioning: None
           unityVersion: ${{ matrix.unityVersion }}
