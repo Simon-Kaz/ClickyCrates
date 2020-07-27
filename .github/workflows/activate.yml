@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         unityVersion:
-          - 2019.4.0f1 # not current 2019 LTS, but the most recent available docker image at https://hub.docker.com/r/gableroux/unity3d/tags
+          - 2019.3.12f1 # not current 2019 LTS, but the most recent available docker image at https://hub.docker.com/r/gableroux/unity3d/tags
           - 2018.4.21f1 # not current 2018 LTS, but the most recent available docker image at https://hub.docker.com/r/gableroux/unity3d/tags
     steps:
       # Checkout repository
